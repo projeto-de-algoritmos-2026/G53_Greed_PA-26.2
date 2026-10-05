@@ -4,6 +4,10 @@ Minijogo do grupo G53 para demonstrar **Knapsack fracionário** com algoritmos g
 Cada expedição sorteia cinco lotes divisíveis: ouro, prata, bronze, cristal moído e pó mágico.
 Escolha quanto levar para maximizar os pontos sem ultrapassar a capacidade da mochila.
 
+## Apresentação
+
+[Assista à apresentação do Mochila de Tesouros no YouTube](https://youtu.be/96vpDrYzWx4).
+
 ## Como executar
 
 Clone o repositório e abra `index.html` em um navegador moderno. Não há dependências, backend
