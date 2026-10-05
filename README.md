@@ -28,6 +28,23 @@ a partir de 70%, duas; acima de zero, uma; mochila vazia, nenhuma. Cada finaliza
 
 ## Rodadas dinâmicas
 
+### Modo Desafiador
+
+Selecione **DESAFIADOR · valores secretos** em **Modo de jogo**. Os cartões mostram apenas os pesos:
+os pontos por lote são substituídos por `?`. A pontuação da mochila também fica oculta durante a edição
+e só aparece ao finalizar uma coleta válida, junto do aproveitamento em relação à solução ótima.
+O botão de revelar a solução não aparece nesse modo, mesmo após alcançar 100%.
+
+O histórico registra as quantidades, os pontos e o aproveitamento de cada tentativa, da mais recente
+para a mais antiga. Ajuste a coleta usando esses resultados até encontrar uma mochila perfeita.
+Esvaziar a mochila mantém o histórico. Trocar a capacidade ou iniciar outra expedição limpa o histórico
+e reinicia o contador. Trocar de modo sempre sorteia uma nova expedição, mantendo a capacidade escolhida,
+para que os valores vistos no Clássico não revelem a solução do Desafiador.
+
+Os segredos são uma regra da interface de um jogo local, não uma proteção contra inspeção do JavaScript.
+
+### Sorteio dos lotes
+
 Cada lote tem de 4 a 9 kg e vale de 15 a 110 pontos por kg, em múltiplos de cinco.
 O valor mostrado no cartão é o **valor do lote inteiro**, calculado pelo peso vezes o valor por kg.
 Qualquer material pode ser o mais vantajoso; o nome e a posição não indicam sua prioridade.
@@ -76,6 +93,8 @@ Os nove testes cobrem solução ótima, frações, validações, imutabilidade d
 as três capacidades e um caso em que escolher o maior valor total falha.
 No navegador foram verificados: troca de mochila, excesso de peso, soluções ótimas com 10 e 18 kg,
 revelação opcional da solução e limpeza da coleta ao sortear uma nova expedição.
+Também foram verificados o modo Desafiador, a ausência de valores e da solução na interface,
+a pontuação após finalizar, o histórico entre tentativas e o retorno ao modo Clássico com nova rodada.
 
 ## Roteiro de apresentação
 
