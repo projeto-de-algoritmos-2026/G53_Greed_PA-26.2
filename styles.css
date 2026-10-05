@@ -32,3 +32,11 @@ button:hover { filter: brightness(1.1); }
 .result li { color: #bcc6bd; line-height: 1.8; }
 footer { text-align: center; color: #a3b1a7; font-size: .8rem; margin-top: 32px; }
 @media (max-width: 640px) { .game { padding: 28px 16px; } .treasures { grid-template-columns: 1fr; } .treasure { padding: 20px; } .icon { float: right; margin: 0; } .summary { flex-wrap: wrap; } }
+.expedition { margin-bottom: 24px; padding: 20px; border: 1px solid #3c4b40; border-radius: 16px; }
+select { width: 100%; padding: 12px; border: 1px solid #657469; border-radius: 8px; background: #202b26; color: #f1eee6; font: inherit; }
+.expedition .summary { align-items: center; }
+.expedition p { font-size: .85rem; }
+.treasures { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+details { border-top: 1px solid #657469; padding-top: 16px; }
+summary { cursor: pointer; color: #e9c266; font-weight: 700; padding: 8px 0; }
+@media (max-width: 640px) { .treasures { grid-template-columns: 1fr; } }

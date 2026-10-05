@@ -6,6 +6,7 @@
   <title>Mochila de Tesouros</title>
   <link rel="stylesheet" href="styles.css">
   <script src="knapsack.js" defer></script>
+  <script src="rounds.js" defer></script>
   <script src="game.js" defer></script>
 </head>
 <body>
@@ -13,41 +14,25 @@
     <header>
       <p class="eyebrow">G53 · ALGORITMOS GULOSOS</p>
       <h1>🎒 Mochila de Tesouros</h1>
-      <p>Uma mochila pequena. Um tesouro enorme. Quanto você consegue levar?</p>
+      <p>Cada expedição tem novos tesouros. Faça cada quilo valer a pena.</p>
     </header>
     <section class="intro" aria-labelledby="mission-title">
       <h2 id="mission-title">Sua missão</h2>
-      <p>Escolha até <strong>10 kg</strong> de tesouros para conseguir o maior valor possível. Os metais estão em pó: você pode levar frações de cada um.</p>
+      <p>Escolha sua mochila e colete o maior valor possível. Os cartões mostram o <strong>valor do lote inteiro</strong>: compare com seu peso antes de escolher. Você pode levar frações de todos os materiais.</p>
+    </section>
+    <section class="expedition" aria-label="Configurar expedição">
+      <label for="backpack-choice">Escolha sua mochila</label>
+      <select id="backpack-choice"></select>
+      <p>Trocar a mochila esvazia a coleta, mas mantém os tesouros desta rodada.</p>
+      <div class="summary"><strong id="round-label">Expedição 1</strong><button id="new-round" class="secondary" type="button">🎲 Nova expedição</button></div>
     </section>
     <form id="game-form">
-      <div class="treasures">
-        <article class="treasure gold">
-          <span class="icon" aria-hidden="true">🟡</span>
-          <h2>Ouro em pó</h2><p class="price">100 <span>pontos/kg</span></p>
-          <p>Disponível: 4 kg</p>
-          <label for="gold">Quanto levar (kg)</label>
-          <input id="gold" name="gold" type="number" min="0" max="4" step="0.1" value="0" required inputmode="decimal">
-        </article>
-        <article class="treasure silver">
-          <span class="icon" aria-hidden="true">⚪</span>
-          <h2>Prata em pó</h2><p class="price">60 <span>pontos/kg</span></p>
-          <p>Disponível: 5 kg</p>
-          <label for="silver">Quanto levar (kg)</label>
-          <input id="silver" name="silver" type="number" min="0" max="5" step="0.1" value="0" required inputmode="decimal">
-        </article>
-        <article class="treasure bronze">
-          <span class="icon" aria-hidden="true">🟠</span>
-          <h2>Bronze em pó</h2><p class="price">20 <span>pontos/kg</span></p>
-          <p>Disponível: 6 kg</p>
-          <label for="bronze">Quanto levar (kg)</label>
-          <input id="bronze" name="bronze" type="number" min="0" max="6" step="0.1" value="0" required inputmode="decimal">
-        </article>
-      </div>
+      <div id="treasures" class="treasures"></div>
       <section class="backpack" aria-label="Sua mochila">
-        <div class="summary"><strong>Peso da mochila</strong><output id="weight">0 / 10 kg</output></div>
+        <div class="summary"><strong>Peso da mochila</strong><output id="weight"></output></div>
         <progress id="capacity" max="10" value="0" aria-label="Peso ocupado em quilos"></progress>
-        <p id="feedback" role="status">Escolha seus tesouros para começar.</p>
-        <div class="actions"><button type="submit">Finalizar coleta →</button><button type="reset" class="secondary">Recomeçar</button></div>
+        <p id="feedback" role="status"></p>
+        <div class="actions"><button type="submit">Finalizar coleta →</button><button type="reset" class="secondary">Esvaziar mochila</button></div>
       </section>
     </form>
     <section id="result" class="result" aria-labelledby="result-title" tabindex="-1" hidden></section>
