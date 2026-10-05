@@ -1,72 +1,86 @@
 # 🎒 Mochila de Tesouros
 
-Minijogo do grupo G53 para demonstrar **Knapsack fracionário**, no tema de algoritmos gulosos.
-Escolha a quantidade de ouro, prata e bronze em pó para maximizar os pontos de uma mochila de 10 kg.
+Minijogo do grupo G53 para demonstrar **Knapsack fracionário** com algoritmos gulosos.
+Cada expedição sorteia cinco lotes divisíveis: ouro, prata, bronze, cristal moído e pó mágico.
+Escolha quanto levar para maximizar os pontos sem ultrapassar a capacidade da mochila.
 
 ## Como executar
 
-Clone o repositório e abra `index.html` em um navegador moderno. Não é necessário instalar dependências,
-usar backend ou ter conexão com a internet depois do download.
-
-Opcionalmente, na pasta do projeto, execute `python -m http.server 8000` e acesse `http://localhost:8000`.
+Clone o repositório e abra `index.html` em um navegador moderno. Não há dependências, backend
+ou necessidade de internet após o download. Opcionalmente, execute `python -m http.server 8000`
+na pasta do projeto e acesse `http://localhost:8000`.
 
 ## Como jogar
 
-1. Informe quantos quilos de cada metal deseja levar. Os campos aceitam incrementos de 0,1 kg.
-2. Acompanhe o peso e os pontos da mochila. Não ultrapasse o estoque de cada metal nem o limite de 10 kg.
-3. Clique em **Finalizar coleta** para comparar sua escolha com a melhor solução.
-4. Leia o passo a passo do algoritmo e tente melhorar sua pontuação. **Recomeçar** zera a mochila.
+1. Escolha uma mochila: **6 kg**, **10 kg** ou **18 kg**.
+2. Compare o valor total de cada lote com seu peso. O lote com mais pontos nem sempre é a melhor escolha!
+3. Informe as quantidades em incrementos de 0,1 kg. Os materiais podem ser fracionados.
+4. Clique em **Finalizar coleta** para ver pontos, aproveitamento e estrelas.
+5. Tente melhorar sua escolha ou abra **Revelar solução do algoritmo** para ver o cálculo.
+6. Use **Nova expedição** para sortear novos pesos, valores e ordem dos cartões.
 
-| Tesouro | Estoque | Pontos por kg |
-| --- | --- | --- |
-| Ouro em pó | 4 kg | 100 |
-| Prata em pó | 5 kg | 60 |
-| Bronze em pó | 6 kg | 20 |
+Trocar a mochila esvazia a coleta e zera o contador de tentativas, mantendo os mesmos lotes.
+**Esvaziar mochila** limpa apenas as quantidades, permitindo tentar novamente na mesma rodada.
+Uma nova expedição mantém a mochila escolhida e reinicia as tentativas. Nada é salvo ao recarregar a página.
 
-O aproveitamento é `100 × pontos coletados / pontos ótimos`. Uma solução ótima recebe três estrelas;
-a partir de 70%, duas; acima de zero, uma; mochila vazia, nenhuma.
+O aproveitamento é `100 × pontos coletados / pontos ótimos`: uma solução ótima recebe três estrelas;
+a partir de 70%, duas; acima de zero, uma; mochila vazia, nenhuma. Cada finalização válida conta como tentativa.
+
+## Rodadas dinâmicas
+
+Cada lote tem de 4 a 9 kg e vale de 15 a 110 pontos por kg, em múltiplos de cinco.
+O valor mostrado no cartão é o **valor do lote inteiro**, calculado pelo peso vezes o valor por kg.
+Qualquer material pode ser o mais vantajoso; o nome e a posição não indicam sua prioridade.
+O estoque total sempre excede 18 kg, exigindo escolhas mesmo com a maior mochila.
+
+Os sorteios tornam as combinações variáveis, mas preservam a regra do Knapsack fracionário:
+priorizar o maior valor por kg continua sendo a estratégia ótima. O desafio é identificar essa relação,
+não decorar uma quantidade fixa. Empates de valor por kg podem produzir diferentes soluções igualmente ótimas.
 
 ## Algoritmo guloso
 
 A função `fractionalKnapsack`, em `knapsack.js`, ordena uma cópia dos itens pelo valor por kg em ordem
-decrescente. Para cada item, leva o mínimo entre o estoque disponível e a capacidade restante.
-Assim, pode pegar apenas uma parte do último tesouro.
+decrescente. Para cada item, leva o mínimo entre o estoque e a capacidade restante, podendo fracionar
+qualquer lote. O algoritmo não altera a ordem original dos cartões.
 
-Neste cenário, a solução ótima é **4 kg de ouro + 5 kg de prata + 1 kg de bronze = 720 pontos**.
-A estratégia funciona porque os recursos são divisíveis: substituir peso de um metal menos valioso
-por igual peso de outro mais valioso nunca reduz a pontuação. Escolher os maiores valores por kg
-primeiro permite obter uma solução ótima. Isso não se aplica, em geral, ao Knapsack 0/1, no qual os
-itens são indivisíveis.
+Exemplo: um lote de 9 kg vale 180 pontos e outro de 4 kg vale 160 pontos. O segundo vale 40 pontos/kg,
+enquanto o primeiro vale 20. Em uma mochila de 6 kg, levar os 4 kg do segundo e 2 kg do primeiro rende
+200 pontos, contra 120 ao levar apenas 6 kg do lote com maior valor total.
 
-A ordenação custa **O(n log n)** e o percurso custa **O(n)**. A cópia e a seleção ocupam **O(n)** de
-espaço adicional. O algoritmo aceita quantidades fracionárias; a interface limita as escolhas a décimos
-de quilo para simplificar o jogo.
+Substituir peso de um material menos valioso por igual peso de outro mais valioso nunca reduz os pontos.
+Como os materiais são divisíveis, essa estratégia permite obter uma solução ótima. Isso não vale em geral
+para Knapsack 0/1, em que os itens são indivisíveis.
+
+Complexidade: **O(n log n)** para ordenar, **O(n)** para percorrer e **O(n)** de espaço adicional.
+A interface restringe as escolhas a décimos de quilo; como estoques e capacidades são inteiros,
+sempre é possível representar uma solução ótima neste jogo.
 
 ## Organização
 
-- `index.html`: estrutura e formulário do jogo.
-- `styles.css`: visual responsivo, sem bibliotecas externas.
-- `knapsack.js`: dados dos tesouros, algoritmo e validação das escolhas.
-- `game.js`: atualização da interface, pontuação, comparação e reinício.
-- `tests/knapsack.test.js`: testes automatizados com o executor nativo do Node.js.
+- `index.html`: estrutura da página e controles de expedição.
+- `styles.css`: visual responsivo sem bibliotecas externas.
+- `knapsack.js`: algoritmo, validação e cenário fixo usado nos testes de regressão.
+- `rounds.js`: mochilas e geração de lotes sorteados.
+- `game.js`: estado da rodada, formulário, pontuação e explicação opcional.
+- `tests/`: testes automatizados com o executor nativo do Node.js.
 
 ## Testes
 
-Com Node.js 18 ou superior, execute:
+Com Node.js 18 ou superior:
 
 ```sh
-node --test tests/knapsack.test.js
+node --test tests/knapsack.test.js tests/rounds.test.js
 ```
 
-Os testes cobrem solução ótima, fracionamento, ordenação sem alterar a entrada, capacidades zero e
-excedente, lista vazia, entradas inválidas, excesso de peso e cálculo da escolha do jogador.
+Os nove testes cobrem solução ótima, frações, validações, imutabilidade da entrada, limites dos sorteios,
+as três capacidades e um caso em que escolher o maior valor total falha.
+No navegador foram verificados: troca de mochila, excesso de peso, soluções ótimas com 10 e 18 kg,
+revelação opcional da solução e limpeza da coleta ao sortear uma nova expedição.
 
-Para conferir a interface: finalize com 4/5/1 kg (720 pontos), tente 4/5/2 kg (excesso de peso) e use
-Recomeçar (campos e peso zerados). Esses fluxos também foram verificados no navegador.
+## Roteiro de apresentação
 
-## Roteiro curto de apresentação
-
-1. Explique a capacidade da mochila e o valor por kg dos três tesouros.
-2. Faça uma escolha que caiba, mas não seja ótima, como 0/4/6 kg (360 pontos).
-3. Mostre a comparação com os 720 pontos possíveis e a ordenação gulosa.
-4. Explique por que os metais em pó permitem fracionamento e mostre a função em `knapsack.js`.
+1. Escolha uma mochila e explique que os cartões mostram valores de lotes inteiros.
+2. Monte uma coleta e observe sua pontuação.
+3. Revele a solução e mostre a divisão valor/peso e a ordenação gulosa.
+4. Troque a mochila para comparar a mesma rodada com outra capacidade.
+5. Sorteie uma expedição e mostre que a estratégia continua válida apesar das novas quantidades.
