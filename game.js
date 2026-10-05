@@ -11,15 +11,21 @@ const cards = document.querySelector('#treasures');
 const mode = document.querySelector('#mode-choice');
 const history = document.querySelector('#history');
 const attemptList = document.querySelector('#attempt-list');
-const isChallenge = () => mode.value === 'challenge';
+let selectedMode = 'classic';
+const isChallenge = () => selectedMode === 'challenge';
 const format = value => value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
 let capacity = 10;
 let treasures = [];
 let round = 0;
 let attempts = 0;
 
-choice.innerHTML = BACKPACKS.map(bag => `<option value="${bag.capacity}">${bag.name} · ${bag.capacity} kg</option>`).join('');
-choice.value = String(capacity);
+choice.innerHTML = BACKPACKS.map(bag => `
+  <button type="button" class="option-button bag-card" data-capacity="${bag.capacity}" aria-pressed="${bag.capacity === capacity}">
+    <span class="bag-icon" aria-hidden="true">🎒</span>
+    <strong class="bag-capacity">${bag.capacity} kg</strong>
+    <span>${bag.name}</span>
+    <span class="selection-mark" aria-hidden="true">${bag.capacity === capacity ? '✓ Selecionada' : 'Selecionar'}</span>
+  </button>`).join('');
 
 function renderCards() {
   cards.innerHTML = treasures.map(item => `
@@ -63,14 +69,27 @@ function newRound() {
   update();
 }
 
-choice.addEventListener('change', () => {
-  capacity = Number(choice.value);
+choice.addEventListener('click', event => {
+  const button = event.target.closest('button[data-capacity]');
+  if (!button || Number(button.dataset.capacity) === capacity) return;
+  capacity = Number(button.dataset.capacity);
+  for (const option of choice.querySelectorAll('button')) {
+    const selected = Number(option.dataset.capacity) === capacity;
+    option.setAttribute('aria-pressed', String(selected));
+    option.querySelector('.selection-mark').textContent = selected ? '✓ Selecionada' : 'Selecionar';
+  }
   attempts = 0;
   attemptList.replaceChildren();
   history.hidden = true;
   emptyBackpack();
 });
-mode.addEventListener('change', () => {
+mode.addEventListener('click', event => {
+  const button = event.target.closest('button[data-mode]');
+  if (!button || button.dataset.mode === selectedMode) return;
+  selectedMode = button.dataset.mode;
+  for (const option of mode.querySelectorAll('button')) {
+    option.setAttribute('aria-pressed', String(option.dataset.mode === selectedMode));
+  }
   document.querySelector('#mission-text').textContent = isChallenge()
     ? 'Os valores são secretos! Escolha quantidades, finalize a coleta e compare suas tentativas até alcançar 100%. Você pode levar frações de todos os materiais.'
     : 'Escolha sua mochila e colete o maior valor possível. Compare o valor do lote inteiro com seu peso. Você pode levar frações de todos os materiais.';

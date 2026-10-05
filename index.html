@@ -21,14 +21,14 @@
       <p id="mission-text">Escolha sua mochila e colete o maior valor possível. No modo clássico, compare o valor do lote inteiro com seu peso. Você pode levar frações de todos os materiais.</p>
     </section>
     <section class="expedition" aria-label="Configurar expedição">
-      <label for="mode-choice">Modo de jogo</label>
-      <select id="mode-choice" aria-describedby="mode-help">
-        <option value="classic">Clássico · valores visíveis</option>
-        <option value="challenge">DESAFIADOR · valores secretos</option>
-      </select>
+      <h2 id="mode-title">Modo de jogo</h2>
+      <div id="mode-choice" class="mode-options" role="group" aria-labelledby="mode-title" aria-describedby="mode-help">
+        <button type="button" class="option-button" data-mode="classic" aria-pressed="true"><strong>Clássico</strong><span>Valores visíveis</span></button>
+        <button type="button" class="option-button" data-mode="challenge" aria-pressed="false"><strong>Desafiador</strong><span>Valores secretos</span></button>
+      </div>
       <p id="mode-help">Trocar o modo inicia uma nova expedição. No Desafiador, descubra a melhor coleta pela pontuação de cada tentativa.</p>
-      <label for="backpack-choice">Escolha sua mochila</label>
-      <select id="backpack-choice"></select>
+      <h2 id="backpack-title">Escolha sua mochila</h2>
+      <div id="backpack-choice" class="backpack-options" role="group" aria-labelledby="backpack-title"></div>
       <p>Trocar a mochila esvazia a coleta, mas mantém os tesouros desta rodada.</p>
       <div class="summary"><strong id="round-label">Expedição 1</strong><button id="new-round" class="secondary" type="button">🎲 Nova expedição</button></div>
     </section>
