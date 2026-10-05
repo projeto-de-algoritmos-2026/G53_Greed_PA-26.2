@@ -12,7 +12,7 @@ na pasta do projeto e acesse `http://localhost:8000`.
 
 ## Como jogar
 
-1. Escolha uma mochila: **6 kg**, **10 kg** ou **18 kg**.
+1. Escolha um dos três cards de mochila: **6 kg**, **10 kg** ou **18 kg**. O card selecionado fica destacado.
 2. Compare o valor total de cada lote com seu peso. O lote com mais pontos nem sempre é a melhor escolha!
 3. Informe as quantidades em incrementos de 0,1 kg. Os materiais podem ser fracionados.
 4. Clique em **Finalizar coleta** para ver pontos, aproveitamento e estrelas.
@@ -30,7 +30,7 @@ a partir de 70%, duas; acima de zero, uma; mochila vazia, nenhuma. Cada finaliza
 
 ### Modo Desafiador
 
-Selecione **DESAFIADOR · valores secretos** em **Modo de jogo**. Os cartões mostram apenas os pesos:
+Clique no botão **Desafiador** em **Modo de jogo** (ou em **Clássico** para voltar aos valores visíveis). Os cartões mostram apenas os pesos no Desafiador:
 os pontos por lote são substituídos por `?`. A pontuação da mochila também fica oculta durante a edição
 e só aparece ao finalizar uma coleta válida, junto do aproveitamento em relação à solução ótima.
 O botão de revelar a solução não aparece nesse modo, mesmo após alcançar 100%.
