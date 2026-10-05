@@ -18,9 +18,15 @@
     </header>
     <section class="intro" aria-labelledby="mission-title">
       <h2 id="mission-title">Sua missão</h2>
-      <p>Escolha sua mochila e colete o maior valor possível. Os cartões mostram o <strong>valor do lote inteiro</strong>: compare com seu peso antes de escolher. Você pode levar frações de todos os materiais.</p>
+      <p id="mission-text">Escolha sua mochila e colete o maior valor possível. No modo clássico, compare o valor do lote inteiro com seu peso. Você pode levar frações de todos os materiais.</p>
     </section>
     <section class="expedition" aria-label="Configurar expedição">
+      <label for="mode-choice">Modo de jogo</label>
+      <select id="mode-choice" aria-describedby="mode-help">
+        <option value="classic">Clássico · valores visíveis</option>
+        <option value="challenge">DESAFIADOR · valores secretos</option>
+      </select>
+      <p id="mode-help">Trocar o modo inicia uma nova expedição. No Desafiador, descubra a melhor coleta pela pontuação de cada tentativa.</p>
       <label for="backpack-choice">Escolha sua mochila</label>
       <select id="backpack-choice"></select>
       <p>Trocar a mochila esvazia a coleta, mas mantém os tesouros desta rodada.</p>
@@ -36,6 +42,11 @@
       </section>
     </form>
     <section id="result" class="result" aria-labelledby="result-title" tabindex="-1" hidden></section>
+    <section id="history" class="result" aria-labelledby="history-title" hidden>
+      <h2 id="history-title">Suas tentativas</h2>
+      <p>Compare suas coletas para descobrir quais materiais rendem mais.</p>
+      <ol id="attempt-list"></ol>
+    </section>
     <noscript><p>Ative o JavaScript para jogar.</p></noscript>
     <footer>Um pequeno jogo sobre grandes escolhas · Knapsack fracionário</footer>
   </main>

@@ -8,6 +8,10 @@ const weight = document.querySelector('#weight');
 const progress = document.querySelector('#capacity');
 const choice = document.querySelector('#backpack-choice');
 const cards = document.querySelector('#treasures');
+const mode = document.querySelector('#mode-choice');
+const history = document.querySelector('#history');
+const attemptList = document.querySelector('#attempt-list');
+const isChallenge = () => mode.value === 'challenge';
 const format = value => value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
 let capacity = 10;
 let treasures = [];
@@ -22,7 +26,7 @@ function renderCards() {
     <article class="treasure" style="--accent: ${item.color}">
       <span class="icon" aria-hidden="true">${item.icon}</span>
       <h2>${item.name}</h2>
-      <p class="price">${format(item.totalValue)} <span>pontos/lote</span></p>
+      <p class="price">${isChallenge() ? '? <span>valor secreto</span>' : `${format(item.totalValue)} <span>pontos/lote</span>`}</p>
       <p>Peso do lote: <strong>${item.available} kg</strong></p>
       <label for="${item.id}">Quanto levar de ${item.name.toLowerCase()} (kg)</label>
       <input id="${item.id}" name="${item.id}" type="number" min="0" max="${item.available}" step="0.1" value="0" required inputmode="decimal">
@@ -38,7 +42,7 @@ function update() {
   progress.value = Math.min(state.totalWeight ?? 0, capacity);
   feedback.classList.toggle('error', !state.valid);
   feedback.textContent = state.valid
-    ? `Valor da sua mochila: ${format(state.totalValue)} pontos. Espaço livre: ${format(capacity - state.totalWeight)} kg.`
+    ? `${isChallenge() ? 'Finalize a coleta para descobrir sua pontuação.' : `Valor da sua mochila: ${format(state.totalValue)} pontos.`} Espaço livre: ${format(capacity - state.totalWeight)} kg.`
     : state.message;
   return state;
 }
@@ -52,6 +56,8 @@ function newRound() {
   treasures = createRound();
   round++;
   attempts = 0;
+  attemptList.replaceChildren();
+  history.hidden = true;
   document.querySelector('#round-label').textContent = `Expedição ${round}`;
   renderCards();
   update();
@@ -60,7 +66,15 @@ function newRound() {
 choice.addEventListener('change', () => {
   capacity = Number(choice.value);
   attempts = 0;
+  attemptList.replaceChildren();
+  history.hidden = true;
   emptyBackpack();
+});
+mode.addEventListener('change', () => {
+  document.querySelector('#mission-text').textContent = isChallenge()
+    ? 'Os valores são secretos! Escolha quantidades, finalize a coleta e compare suas tentativas até alcançar 100%. Você pode levar frações de todos os materiais.'
+    : 'Escolha sua mochila e colete o maior valor possível. Compare o valor do lote inteiro com seu peso. Você pode levar frações de todos os materiais.';
+  newRound();
 });
 document.querySelector('#new-round').addEventListener('click', newRound);
 form.addEventListener('input', update);
@@ -78,17 +92,27 @@ form.addEventListener('submit', event => {
   const percentage = state.totalValue / optimal.totalValue * 100;
   const perfect = Math.abs(state.totalValue - optimal.totalValue) < 1e-9;
   const stars = perfect ? '★★★' : percentage >= 70 ? '★★☆' : percentage > 0 ? '★☆☆' : '☆☆☆';
+  if (isChallenge()) {
+    const entry = document.createElement('li');
+    const collection = treasures
+      .filter(item => form.elements[item.id].valueAsNumber > 0)
+      .map(item => `${item.name}: ${format(form.elements[item.id].valueAsNumber)} kg`)
+      .join(' · ') || 'Mochila vazia';
+    entry.textContent = `Tentativa ${attempts} — ${collection} — ${format(state.totalValue)} pontos (${format(percentage)}%).`;
+    attemptList.prepend(entry);
+    history.hidden = false;
+  }
   result.innerHTML = `
     <p class="eyebrow">EXPEDIÇÃO ${round} · TENTATIVA ${attempts}</p>
     <h2 id="result-title">${stars} ${perfect ? 'Mochila perfeita!' : 'Coleta concluída!'}</h2>
     <p>Você coletou <strong>${format(state.totalValue)} pontos</strong>. Aproveitamento: <strong>${format(percentage)}%</strong> do valor ótimo.</p>
-    <p>${perfect ? 'Você encontrou a melhor combinação! Sorteie uma nova expedição para continuar.' : 'Ainda há espaço para melhorar a estratégia. Ajuste as quantidades e tente novamente, ou revele a solução abaixo.'}</p>
-    <details>
+    <p>${perfect ? 'Você encontrou a melhor combinação! Sorteie uma nova expedição para continuar.' : isChallenge() ? 'Compare suas tentativas abaixo, ajuste as quantidades e tente chegar a 100%!' : 'Ainda há espaço para melhorar a estratégia. Ajuste as quantidades e tente novamente, ou revele a solução abaixo.'}</p>
+    ${isChallenge() ? '' : `<details>
       <summary>Revelar solução do algoritmo</summary>
       <p>O guloso divide o valor de cada lote pelo seu peso, ordena pelo valor por kg e coleta nessa ordem:</p>
       <ol>${optimal.selection.map(item => `<li><strong>${item.name}</strong>: ${format(item.totalValue)} ÷ ${item.available} = ${format(item.valuePerKg)} pontos/kg. Levar ${format(item.quantity)} kg → ${format(item.value)} pontos.</li>`).join('')}</ol>
       <p>Melhor resultado: <strong>${format(optimal.totalValue)} pontos</strong> em ${format(optimal.totalWeight)} kg. O fracionamento permite obter a solução ótima com essa estratégia.</p>
-    </details>`;
+    </details>`}`;
   result.hidden = false;
   result.focus();
 });
