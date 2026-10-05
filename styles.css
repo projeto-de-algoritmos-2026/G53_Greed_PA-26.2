@@ -1,0 +1,34 @@
+:root { color-scheme: dark; font-family: system-ui, sans-serif; color: #f1eee6; background: #141b19; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+.game { max-width: 980px; margin: auto; padding: 48px 24px 24px; }
+header { margin-bottom: 32px; }
+.eyebrow { color: #d8b968; font-size: .75rem; font-weight: 700; letter-spacing: .18em; }
+h1 { font-size: clamp(1.9rem, 5vw, 3rem); letter-spacing: -.04em; margin: 12px 0; }
+h2 { font-size: 1.15rem; margin: 0 0 12px; }
+p { line-height: 1.6; color: #bcc6bd; }
+.intro { border-left: 3px solid #d8b968; padding: 4px 20px; margin-bottom: 28px; }
+.intro p { margin: 0; }
+.treasures { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.treasure, .backpack, .result { background: #202b26; border: 1px solid #3c4b40; border-radius: 16px; padding: 24px; }
+.treasure { border-top: 3px solid var(--accent); }
+.gold { --accent: #e9c266; }.silver { --accent: #c4d1dc; }.bronze { --accent: #d79c73; }
+.icon { display: block; font-size: 2rem; margin-bottom: 20px; }
+.price { color: var(--accent); font-size: 1.65rem; font-weight: 700; margin: 0; }
+.price span { font-size: .85rem; font-weight: 400; }
+label { display: block; font-size: .85rem; margin-bottom: 8px; }
+input { width: 100%; padding: 12px; font: inherit; border: 1px solid #657469; border-radius: 8px; background: #141b19; color: #fff; }
+:focus-visible { outline: 3px solid #e9c266; outline-offset: 4px; }
+.backpack { margin-top: 20px; }
+.summary { display: flex; justify-content: space-between; gap: 16px; }
+progress { width: 100%; height: 14px; margin-top: 18px; accent-color: #e9c266; }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; }
+button { border: 0; border-radius: 8px; padding: 13px 22px; background: #e9c266; color: #1a211b; font: inherit; font-weight: 700; cursor: pointer; }
+button:hover { filter: brightness(1.1); }
+.secondary { background: transparent; border: 1px solid #657469; color: #f1eee6; }
+.error { color: #ffb3a7; }
+.result { margin-top: 20px; }
+.result strong { color: #f0cc7c; }
+.result li { color: #bcc6bd; line-height: 1.8; }
+footer { text-align: center; color: #a3b1a7; font-size: .8rem; margin-top: 32px; }
+@media (max-width: 640px) { .game { padding: 28px 16px; } .treasures { grid-template-columns: 1fr; } .treasure { padding: 20px; } .icon { float: right; margin: 0; } .summary { flex-wrap: wrap; } }
